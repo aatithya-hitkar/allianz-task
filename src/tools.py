@@ -2,7 +2,7 @@ import json
 import os
 import datetime
 import joblib
-from .model_building import predict_churn as ml_predict_churn
+from model_building import predict_churn as ml_predict_churn
 
 MOCK_DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "mock_data")
 CUSTOMERS_FILE = os.path.join(MOCK_DATA_DIR, "customers.json")

@@ -1,8 +1,8 @@
 from google.adk import Agent, Runner
 from google.adk.sessions.in_memory_session_service import InMemorySessionService
 from google.genai.types import Content, Part
-from .config import MODEL_NAME
-from .tools import (
+from config import MODEL_NAME
+from tools import (
     lookup_customer,
     predict_customer_churn,
     get_retention_offers,
