@@ -28,7 +28,7 @@ for message in st.session_state.messages:
             st.markdown(f"<p style='font-size:0.8em; color:gray;'><i>Tools used: {tools_str}</i></p>", unsafe_allow_html=True)
 
 # React to user input
-if prompt := st.chat_input("E.g., Look up CUST-001 and tell me their churn risk."):
+if prompt := st.chat_input("E.g., Look up TC-001 and tell me their churn risk."):
     
     # Display user message in chat message container
     with st.chat_message("user"):

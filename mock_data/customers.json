@@ -1,6 +1,6 @@
 [
   {
-    "customer_id": "CUST-001",
+    "customer_id": "TC-001",
     "name": "Alice Smith",
     "age": 28,
     "gender": "Female",
@@ -19,7 +19,7 @@
     "days_since_last_interaction": 5
   },
   {
-    "customer_id": "CUST-002",
+    "customer_id": "TC-002",
     "name": "Bob Jones",
     "age": 45,
     "gender": "Male",
@@ -38,7 +38,7 @@
     "days_since_last_interaction": 120
   },
   {
-    "customer_id": "CUST-003",
+    "customer_id": "TC-003",
     "name": "Carol Williams",
     "age": 34,
     "gender": "Female",
@@ -57,7 +57,7 @@
     "days_since_last_interaction": 15
   },
   {
-    "customer_id": "CUST-004",
+    "customer_id": "TC-004",
     "name": "David Brown",
     "age": 60,
     "gender": "Male",
@@ -76,7 +76,7 @@
     "days_since_last_interaction": 2
   },
   {
-    "customer_id": "CUST-005",
+    "customer_id": "TC-005",
     "name": "Eve Davis",
     "age": 22,
     "gender": "Other",
@@ -95,7 +95,7 @@
     "days_since_last_interaction": 45
   },
   {
-    "customer_id": "CUST-006",
+    "customer_id": "TC-006",
     "name": "Frank Miller",
     "age": 55,
     "gender": "Male",
@@ -114,7 +114,7 @@
     "days_since_last_interaction": 1
   },
   {
-    "customer_id": "CUST-007",
+    "customer_id": "TC-007",
     "name": "Grace Lee",
     "age": 41,
     "gender": "Female",
@@ -133,7 +133,7 @@
     "days_since_last_interaction": 20
   },
   {
-    "customer_id": "CUST-008",
+    "customer_id": "TC-008",
     "name": "Hank Wilson",
     "age": 30,
     "gender": "Male",
@@ -152,7 +152,7 @@
     "days_since_last_interaction": 60
   },
   {
-    "customer_id": "CUST-009",
+    "customer_id": "TC-009",
     "name": "Ivy Taylor",
     "age": 48,
     "gender": "Female",
@@ -171,7 +171,7 @@
     "days_since_last_interaction": 3
   },
   {
-    "customer_id": "CUST-010",
+    "customer_id": "TC-010",
     "name": "Jack Anderson",
     "age": 35,
     "gender": "Male",
