@@ -2,6 +2,7 @@ import json
 import os
 import datetime
 import joblib
+import pandas as pd
 from model_building import predict_churn as ml_predict_churn
 
 MOCK_DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "mock_data")
@@ -30,14 +31,62 @@ def _append_jsonl(filepath: str, data: dict):
 
 # --- TOOL 1: Lookup Customer ---
 def lookup_customer(customer_id: str) -> dict:
-    "Retrieves the raw, human-readable profile of a customer by their ID (e.g., CUST-001) from the mock database."
+    "Retrieves the raw, human-readable profile of a customer by their ID (e.g., CUST-001) from the database."
     customer_id = str(customer_id).upper().strip()
     _execution_trace.append({"tool": "lookup_customer", "customer_id": customer_id})
-    customers = _load_json(CUSTOMERS_FILE)
-    for c in customers:
-        if c.get("customer_id") == customer_id:
-            return c
-    return {"error": f"Customer ID {customer_id} not found."}
+    
+    csv_path = os.path.join(os.path.dirname(__file__), "..", "data", "test_datafile.csv")
+    if not os.path.exists(csv_path):
+        return {"error": "Database file not found."}
+    
+    try:
+        df = pd.read_csv(csv_path)
+        customer_row = df[df['customer_id'].astype(str).str.upper().str.strip() == customer_id]
+        if customer_row.empty:
+            return {"error": f"Customer ID {customer_id} not found."}
+        
+        row_dict = customer_row.iloc[0].to_dict()
+        
+        # Format the dictionary for the LLM
+        formatted_dict = {}
+        formatted_dict["customer_id"] = row_dict.get("customer_id")
+        
+        # Round numerical values to 2 decimals
+        for col in ["age", "tenure_months", "monthly_charges", "total_charges", "avg_monthly_gb_used", "avg_monthly_minutes"]:
+            if col in row_dict and pd.notna(row_dict[col]):
+                formatted_dict[col] = round(float(row_dict[col]), 2)
+                
+        # String fields
+        for col in ["gender", "internet_service", "phone_service", "payment_method"]:
+            if col in row_dict and pd.notna(row_dict[col]):
+                formatted_dict[col] = str(row_dict[col]).strip()
+                
+        # Integer fields
+        for col in ["num_support_tickets", "num_additional_services", "satisfaction_score"]:
+            if col in row_dict and pd.notna(row_dict[col]):
+                formatted_dict[col] = int(float(row_dict[col]))
+                
+        # Feature mapping for prediction tool
+        if "contract_type" in row_dict and pd.notna(row_dict["contract_type"]):
+            formatted_dict["contract"] = str(row_dict["contract_type"]).strip()
+            
+        # Date transformation
+        if "last_interaction_date" in row_dict and pd.notna(row_dict["last_interaction_date"]):
+            formatted_dict["last_interaction_date"] = str(row_dict["last_interaction_date"])
+            try:
+                interaction_date = pd.to_datetime(row_dict["last_interaction_date"])
+                max_date = pd.to_datetime(df["last_interaction_date"]).max()
+                days_diff = (max_date - interaction_date).days
+                formatted_dict["days_since_last_interaction"] = int(days_diff)
+            except Exception:
+                formatted_dict["days_since_last_interaction"] = 10
+        
+        # Omit 'churned' column explicitly to prevent data leakage
+        
+        return formatted_dict
+        
+    except Exception as e:
+        return {"error": f"Error looking up customer: {str(e)}"}
 
 # --- TOOL 2: Predict Churn ---
 def _translate_to_model_features(raw_data: dict) -> dict:
